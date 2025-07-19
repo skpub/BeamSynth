@@ -29,17 +29,19 @@ jobs:
           cmake -B ${{ env.BUILD_DIR }} -DCMAKE_BUILD_TYPE=Release
           cmake --build ${{ env.BUILD_DIR }} --target BeamSynth_All --config Release
 
-      - name: Packaging
+      - name: Packaging (macOS)
         run: |
           ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH=${{ env.BUILD_DIR }}/src/BeamSynth_artefacts/Release
+
+          zip -r "$ZIP_FILE_NAME" "$BUILD_OUTPUT_PATH"
+      - name: Packaging (Windows)
+        run: |
+          ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH_WINDOWS=${{ env.BUILD_DIR }}\\src\\BeamSynth_artefacts\\Release\\*
 
-          if [ "${{ matrix.os }}" == "macos-latest" ]; then
-            zip -r "$ZIP_FILE_NAME" "$BUILD_OUTPUT_PATH"
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            pwsh -command "Compress-Archive -Path '${BUILD_OUTPUT_PATH_WINDOWS}' -DestinationPath '${ZIP_FILE_NAME}'"
-          fi
+          pwsh -command "Compress-Archive -Path '${BUILD_OUTPUT_PATH_WINDOWS}' -DestinationPath '${ZIP_FILE_NAME}'"
+
       - name: Upload Artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
