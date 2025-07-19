@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.20)
+
+project(BeamSynth VERSION 0.0.1)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(JUCE_DEBUG=1)
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O0 -g")
+else()
+    add_compile_definitions(JUCE_RELEASE=1)
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -DNDEBUG")
+endif()
+
+add_subdirectory(lib/JUCE)
+
+set(JUCE_GLOBAL_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lib/JUCE/modules")
+
+add_subdirectory(src)
