@@ -35,14 +35,12 @@ jobs:
           ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH=${{ env.BUILD_DIR }}/src/BeamSynth_artefacts/Release
 
-          zip -r "$ZIP_FILE_NAME" "$BUILD_OUTPUT_PATH"
+          cd $BUILD_OUTPUT_PATH
+          zip -r "$ZIP_FILE_NAME" *
       - name: Packaging (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
-          BUILD_OUTPUT_PATH_WINDOWS=${{ env.BUILD_DIR }}\\src\\BeamSynth_artefacts\\Release\\*
-
-          pwsh -command "Compress-Archive -Path '${BUILD_OUTPUT_PATH_WINDOWS}' -DestinationPath '${ZIP_FILE_NAME}'"
+          pwsh -command "Compress-Archive -Path ${{ env.BUILD_DIR }}\\src\\BeamSynth_artefacts\\Release\\* -DestinationPath BeamSynth_${{ matrix.os }}.zip"
 
       - name: Upload Artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
