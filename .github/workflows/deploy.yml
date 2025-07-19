@@ -30,12 +30,14 @@ jobs:
           cmake --build ${{ env.BUILD_DIR }} --target BeamSynth_All --config Release
 
       - name: Packaging (macOS)
+        if: matrix.os == 'macos-latest'
         run: |
           ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH=${{ env.BUILD_DIR }}/src/BeamSynth_artefacts/Release
 
           zip -r "$ZIP_FILE_NAME" "$BUILD_OUTPUT_PATH"
       - name: Packaging (Windows)
+        if: matrix.os == 'windows-latest'
         run: |
           ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH_WINDOWS=${{ env.BUILD_DIR }}\\src\\BeamSynth_artefacts\\Release\\*
