@@ -35,8 +35,10 @@ jobs:
           ZIP_FILE_NAME=BeamSynth_${{ matrix.os }}.zip
           BUILD_OUTPUT_PATH=${{ env.BUILD_DIR }}/src/BeamSynth_artefacts/Release
 
+          current_dir=$(pwd)
           cd $BUILD_OUTPUT_PATH
           zip -r "$ZIP_FILE_NAME" *
+          mv $ZIP_FILE_NAME $current_dir
       - name: Packaging (Windows)
         if: matrix.os == 'windows-latest'
         run: |
